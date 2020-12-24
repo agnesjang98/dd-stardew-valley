@@ -16,3 +16,6 @@ make
 
 Make will install the deps and compile the mod. SMAPI will take care of installing it in the right place for us
 
+# Adding packages
+
+I have no clue how to do this nicely outside of visual studio. It's 2:30 am and I'm done trying 
