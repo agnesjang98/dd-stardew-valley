@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Datadog Stardew Valley",
+  "Author": "Agnes Jang, Matthew Monjarrez, Tal Usvyatsky",
+  "Version": "1.0.0",
+  "Description": "Submit metrics to Datadog about your farm",
+  "UniqueID": "dd.DdStardewValley",
+  "EntryDll": "DdStardewValley.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": []
+}
