@@ -5,13 +5,16 @@ using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using StatsdClient;
+using log4net;
+using System.Reflection;
+using log4net.Config;
 
 namespace DdStardewValley
 {
     /// <summary>The mod entry point.</summary>
     public class ModEntry : Mod
     {
-
+        private static readonly ILog _log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /*********
         ** Public methods
@@ -20,6 +23,7 @@ namespace DdStardewValley
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
+            XmlConfigurator.Configure();
             helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
         }
 
@@ -42,6 +46,8 @@ namespace DdStardewValley
             DogStatsd.Configure(dogstatsdConfig);
             DogStatsd.Counter("dev.stardew.save_loaded", 2, tags: new[] { "player:" + Game1.player.name });
             this.Monitor.Log("Metric sent", LogLevel.Debug);
+            String testLogLine = String.Format("Save successfully loaded from player {0}", Game1.player.name);
+            _log.Info(testLogLine);
 
             DogStatsd.Dispose(); // Flush all metrics not yet sent
         }
