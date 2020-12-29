@@ -22,6 +22,9 @@ The Datadog agent must be installed on your machine and be pointing at the corre
 
  Visit https://app.datadoghq.com/account/settings#agent/mac for more instructions.
 
+### Adding Logs
+Follow the steps here to modify the agent: https://app.datadoghq.com/logs/onboarding/server - TBD on getting log4net to work
+
 # Adding packages
 
 I have no clue how to do this nicely outside of visual studio. It's 2:30 am and I'm done trying. 
