@@ -4,12 +4,15 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
+using StatsdClient;
 
 namespace DdStardewValley
 {
     /// <summary>The mod entry point.</summary>
     public class ModEntry : Mod
     {
+
+
         /*********
         ** Public methods
         *********/
@@ -17,24 +20,30 @@ namespace DdStardewValley
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
-            helper.Events.Input.ButtonPressed += this.OnButtonPressed;
+            helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
         }
 
 
         /*********
         ** Private methods
         *********/
-        /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
+        /// <summary>Raised after a save is loaded </summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
-        private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
+        private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
-            // ignore if player hasn't loaded a save yet
-            if (!Context.IsWorldReady)
-                return;
+            this.Monitor.Log("Save loaded", LogLevel.Debug);
+            var dogstatsdConfig = new StatsdConfig
+            {
+                StatsdServerName = "127.0.0.1",
+                StatsdPort = 8125,
+            };
 
-            // print button presses to the console window
-            this.Monitor.Log($"{Game1.player.Name} pressed {e.Button}.", LogLevel.Debug);
+            DogStatsd.Configure(dogstatsdConfig);
+            DogStatsd.Counter("dev.stardew.save_loaded", 2, tags: new[] { "player:" + Game1.player.name });
+            this.Monitor.Log("Metric sent", LogLevel.Debug);
+
+            DogStatsd.Dispose(); // Flush all metrics not yet sent
         }
     }
 }
